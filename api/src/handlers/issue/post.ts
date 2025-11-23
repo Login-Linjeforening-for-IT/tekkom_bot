@@ -44,7 +44,7 @@ export default async function postIssue(req: FastifyRequest, res: FastifyReply) 
     const { action, projects_v2_item, changes, sender } = body
 
     try {
-        const { issueTitle, repoName, projectName } = await getIssueName(projects_v2_item.node_id)
+        const { issueTitle, repoName, projectName, color } = await getIssueName(projects_v2_item.node_id)
         const isEdit = action === 'edited' && changes && changes.field_value.field_name === 'Status'
 
         if (action === 'created') {
@@ -52,7 +52,7 @@ export default async function postIssue(req: FastifyRequest, res: FastifyReply) 
                 'Issue created',
                 `'${issueTitle}'`,
                 `${repoName} • ${projectName} • Action by ${sender.login}`,
-                'green'
+                color
             )
         } else if (isEdit && changes.field_value.to.name === 'Done') {
             await discordIssue(
