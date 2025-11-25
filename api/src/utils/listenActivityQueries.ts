@@ -78,7 +78,10 @@ export async function preloadListenActivityQueries() {
         mostLikedSongsResult,
         mostSkippedAlbumsResult,
         mostSkippedArtistsResult,
-        mostSkippedSongsResult
+        mostSkippedSongsResult,
+        getMostPlayedEpisodesResult,
+        getTopFiveEpisodesThisMonthResult,
+        getMostLikedEpisodesResult
     ] = await Promise.all([
         run(getStatistics),
         run(getCurrentlyListening),
@@ -101,7 +104,10 @@ export async function preloadListenActivityQueries() {
         run(getMostLikedSongs),
         run(getMostSkippedAlbums),
         run(getMostSkippedArtists),
-        run(getMostSkippedSongs)
+        run(getMostSkippedSongs),
+        run(getMostPlayedEpisodes),
+        run(getTopFiveEpisodesThisMonth),
+        run(getMostLikedEpisodes)
     ])
 
     const stats = statsResult.rows[0]
@@ -126,6 +132,9 @@ export async function preloadListenActivityQueries() {
     const mostSkippedAlbums = mostSkippedAlbumsResult.rows
     const mostSkippedArtists = mostSkippedArtistsResult.rows
     const mostSkippedSongs = mostSkippedSongsResult.rows
+    const MostPlayedEpisodes = getMostPlayedEpisodesResult.rows
+    const TopFiveEpisodesThisMonth = getTopFiveEpisodesThisMonthResult.rows
+    const MostLikedEpisodes = getMostLikedEpisodesResult.rows
 
     return {
         stats,
@@ -149,6 +158,9 @@ export async function preloadListenActivityQueries() {
         mostLikedSongs,
         mostSkippedAlbums,
         mostSkippedArtists,
-        mostSkippedSongs
+        mostSkippedSongs,
+        MostPlayedEpisodes,
+        TopFiveEpisodesThisMonth,
+        MostLikedEpisodes
     }
 }
