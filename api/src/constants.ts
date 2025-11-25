@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 export const channels = [] as Channel[]
 export const roles = [] as Role[]
 
-dotenv.config({path: '../.env'})
+dotenv.config({ path: '../.env' })
 
 const requiredEnvironmentVariables = [
     'AUTHENTIK_API_URL',
@@ -32,9 +32,9 @@ const missingVariables = requiredEnvironmentVariables.filter(
 if (missingVariables.length > 0) {
     throw new Error(
         'Missing essential environment variables:\n' +
-            missingVariables
-                .map((key) => `${key}: ${process.env[key] || 'undefined'}`)
-                .join('\n')
+      missingVariables
+          .map((key) => `${key}: ${process.env[key] || 'undefined'}`)
+          .join('\n')
     )
 }
 
@@ -77,8 +77,11 @@ const config = {
     GITHUB_WEBHOOK_SECRET: env.GITHUB_WEBHOOK_SECRET,
     CACHE_TTL: 5000,
     SPOTIFY_API_TRACK_URL: 'https://api.spotify.com/v1/tracks',
+    SPOTIFY_API_EPISODE_URL: 'https://api.spotify.com/v1/episodes',
     SPOTIFY_API_TOKEN_URL: 'https://accounts.spotify.com/api/token',
-    SPOTIFY_API_TOKEN: Buffer.from(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`).toString('base64')
+    SPOTIFY_API_TOKEN: Buffer.from(
+        `${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`
+    ).toString('base64'),
 }
 
 export default config

@@ -1,22 +1,27 @@
 DO $$
-BEGIN
-    IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'tekkom-bot') THEN
-        CREATE DATABASE "tekkom-bot";
-    END IF;
+BEGIN IF NOT EXISTS (
+    SELECT
+    FROM pg_database
+    WHERE datname = 'tekkom-bot'
+) THEN CREATE DATABASE "tekkom-bot";
+END IF;
 END $$;
 
 \c "tekkom-bot"
 
 DO $$
-DECLARE
-    user_password text;
-BEGIN
-    user_password := current_setting('db_password', true);
-
-    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'tekkom-bot') THEN
-        EXECUTE format('CREATE USER "tekkom-bot" WITH ENCRYPTED PASSWORD %L', user_password);
-        EXECUTE 'GRANT ALL PRIVILEGES ON DATABASE "tekkom-bot" TO "tekkom-bot"';
-    END IF;
+DECLARE user_password text;
+BEGIN user_password := current_setting('db_password', true);
+IF NOT EXISTS (
+    SELECT
+    FROM pg_roles
+    WHERE rolname = 'tekkom-bot'
+) THEN EXECUTE format(
+    'CREATE USER "tekkom-bot" WITH ENCRYPTED PASSWORD %L',
+    user_password
+);
+EXECUTE 'GRANT ALL PRIVILEGES ON DATABASE "tekkom-bot" TO "tekkom-bot"';
+END IF;
 END $$;
 
 -- Users
@@ -55,10 +60,25 @@ CREATE TABLE IF NOT EXISTS songs (
     timestamp TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Episodes
+CREATE TABLE IF NOT EXISTS episodes (
+    id TEXT PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    show TEXT NOT NULL REFERENCES artists(id),
+    "image" TEXT NOT NULL,
+    listens INT DEFAULT 1,
+    skips INT DEFAULT 0,
+    timestamp TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- Listens
 CREATE TABLE IF NOT EXISTS listens (
     id SERIAL PRIMARY KEY,
-    song_id TEXT NOT NULL REFERENCES songs(id),
+    -- Polymorphic reference: uses trigger to enforce FK constraint
+    -- song_id references songs(id) when type='track'
+    -- song_id references episodes(id) when type='episode'
+    song_id TEXT NOT NULL,
+    type TEXT NOT NULL CHECK (type IN ('track', 'episode')),
     user_id TEXT NOT NULL REFERENCES users(id),
     "start" TIMESTAMPTZ NOT NULL,
     "end" TIMESTAMPTZ NOT NULL,
@@ -73,7 +93,7 @@ CREATE TABLE IF NOT EXISTS announcements (
     title TEXT NOT NULL,
     description TEXT NOT NULL,
     channel TEXT NOT NULL,
-    roles TEXT[],
+    roles TEXT [],
     embed BOOLEAN,
     color TEXT,
     interval TEXT,
@@ -109,7 +129,7 @@ CREATE TABLE IF NOT EXISTS game_activity (
     state TEXT,
     application TEXT,
     "start" TIMESTAMPTZ NOT NULL,
-    "end"  TIMEStAMPTZ NOT NULL,
+    "end" TIMEStAMPTZ NOT NULL,
     party TEXT
 );
 
@@ -121,32 +141,14 @@ CREATE TABLE IF NOT EXISTS "hidden" (
 
 -- Optimalizations
 CREATE INDEX idx_listens_timestamp_desc ON listens ("timestamp" DESC);
-CREATE INDEX IF NOT EXISTS idx_listens_song_id ON listens(song_id);
-CREATE INDEX IF NOT EXISTS idx_songs_album ON songs(album);
-CREATE INDEX IF NOT EXISTS idx_songs_artist ON songs(artist);
-CREATE INDEX IF NOT EXISTS idx_songs_album_artist ON songs(album, artist);
-CREATE INDEX idx_listens_song_id_start ON listens(song_id, "start");
-CREATE INDEX idx_listens_song_skipped ON listens(song_id, skipped);
-CREATE INDEX idx_songs_album_artist_id ON songs(album, artist, id);
-CREATE INDEX idx_listens_not_skipped_song ON listens(song_id) WHERE skipped = false;
-
-CREATE INDEX idx_songs_listens_skips
-ON songs (listens, skips);
-
-CREATE INDEX idx_user_listens
-ON listens (user_id, skipped);
-
-CREATE INDEX idx_announcements_interval_sent_time 
-ON announcements (interval, sent, "time");
-
-CREATE INDEX idx_listens_start_not_skipped 
-ON listens ("start") WHERE NOT skipped;
-
-CREATE INDEX idx_listens_not_skipped 
-ON listens (skipped) WHERE skipped = false;
-
-CREATE INDEX idx_listens_active_now
-ON listens ("user_id", "start", "end", skipped);
+CREATE INDEX idx_songs_listens_skips ON songs (listens, skips);
+CREATE INDEX idx_user_listens ON listens (user_id, skipped);
+CREATE INDEX idx_announcements_interval_sent_time ON announcements (interval, sent, "time");
+CREATE INDEX idx_listens_start_not_skipped ON listens ("start")
+WHERE NOT skipped;
+CREATE INDEX idx_listens_not_skipped ON listens (skipped)
+WHERE skipped = false;
+CREATE INDEX idx_listens_active_now ON listens ("user_id", "start", "end", skipped);
 
 -- For top songs per artist queries
 CREATE INDEX idx_songs_name_artist_album ON songs (name, artist, album);
@@ -162,13 +164,36 @@ CREATE INDEX idx_artists_listens_desc ON artists (listens DESC);
 CREATE INDEX idx_artists_skips_desc ON artists (skips DESC);
 
 -- Unique ids if not unknown
-CREATE UNIQUE INDEX IF NOT EXISTS artists_unique_id
-ON artists(id) WHERE id <> 'Unknown';
-
-CREATE UNIQUE INDEX IF NOT EXISTS albums_unique_id
-ON albums(id) WHERE id <> 'Unknown';
+CREATE UNIQUE INDEX IF NOT EXISTS artists_unique_id ON artists(id)
+WHERE id <> 'Unknown';
+CREATE UNIQUE INDEX IF NOT EXISTS albums_unique_id ON albums(id)
+WHERE id <> 'Unknown';
 
 -- Number of helper functions per query to increase performance
 SET max_parallel_workers_per_gather = 4;
-SET work_mem = '256MB';
-SET maintenance_work_mem = '512MB';
+
+CREATE OR REPLACE FUNCTION listens_media_exists() RETURNS trigger AS $$ BEGIN IF NEW.type = 'track' THEN IF NOT EXISTS (
+        SELECT 1
+        FROM songs
+        WHERE id = NEW.song_id
+    ) THEN RAISE EXCEPTION 'listen references non-existent track id: %',
+    NEW.song_id;
+END IF;
+ELSIF NEW.type = 'episode' THEN IF NOT EXISTS (
+    SELECT 1
+    FROM episodes
+    WHERE id = NEW.song_id
+) THEN RAISE EXCEPTION 'listen references non-existent episode id: %',
+NEW.song_id;
+END IF;
+ELSE RAISE EXCEPTION 'invalid type: %',
+NEW.type;
+END IF;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+DROP TRIGGER IF EXISTS trg_listens_media_exists ON listens;
+CREATE TRIGGER trg_listens_media_exists BEFORE
+INSERT
+    OR
+UPDATE ON listens FOR EACH ROW EXECUTE FUNCTION listens_media_exists();
