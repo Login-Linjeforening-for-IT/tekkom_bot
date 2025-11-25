@@ -7,7 +7,7 @@ BEGIN IF NOT EXISTS (
 END IF;
 END $$;
 
-\ c "tekkom-bot"
+\c "tekkom-bot"
 
 DO $$
 DECLARE user_password text;
