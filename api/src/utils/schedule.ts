@@ -25,9 +25,7 @@ export function humanToSchedule(
             output = `${minute} ${hour} * * ${week}`
             break
         case 'biweekly':
-            // every 2 weeks → not natively supported by cron
-            // workaround: run weekly on given weekday, and caller tracks "every other"
-            output = `${minute} ${hour} * * ${week}`
+            output = '* * * * * */2'
             break
         case 'once a month':
             output = `${minute} ${hour} ${day} * *`
@@ -45,7 +43,7 @@ export function humanToSchedule(
 // Cron -> Human
 export function scheduleToHuman(interval: string) {
     const parts = interval.split(' ')
-    if (parts.length !== 5) throw new Error('Invalid cron expression')
+    if (parts.length !== 5 && parts.length !== 6) throw new Error('Invalid cron expression')
 
     const [minute, hour, day, month, week] = parts
     let output = ''
@@ -78,6 +76,6 @@ export function scheduleToHuman(interval: string) {
 }
 
 function isValidCronExpr(expr: string): boolean {
-    const cronRegex = /^(\*|([0-5]?\d))( (\*|([01]?\d|2[0-3])))( (\*|([01]?\d|2[0-3])))( (\*|([1-9]|[12]\d|3[01])))( (\*|[0-6]))$/
+    const cronRegex = /^(\*|([0-5]?\d))( (\*|([01]?\d|2[0-3])))( (\*|([01]?\d|2[0-3])))( (\*|([1-9]|[12]\d|3[01])))( (\*|[0-6]))( (\/(\d+)))?$/
     return cronRegex.test(expr)
 }

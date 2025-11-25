@@ -5,9 +5,6 @@ import deleteAnnouncements from './handlers/announcements/delete.ts'
 import getChannels from './handlers/channels/get.ts'
 import postChannels from './handlers/channels/post.ts'
 import getIndex from './handlers/index/getIndex.ts'
-import getToken from './handlers/login/getToken.ts'
-import getLogin from './handlers/login/getLogin.ts'
-import getCallback from './handlers/login/getCallback.ts'
 import postSentAnnouncements from './handlers/sent/post.ts'
 import getRoles from './handlers/roles/get.ts'
 import postRoles from './handlers/roles/post.ts'
@@ -34,11 +31,6 @@ export default async function apiRoutes(fastify: FastifyInstance, _: FastifyPlug
     // roles
     fastify.get('/roles', getRoles)
     fastify.post('/roles', postRoles)
-
-    // auth
-    fastify.get('/token', getToken)
-    fastify.get('/login', getLogin)
-    fastify.get('/callback', getCallback)
 
     // announcements
     fastify.get('/announcements', getAnnouncements)

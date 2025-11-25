@@ -16,6 +16,9 @@ JOIN albums al ON s.album = al.id
 JOIN artists ar ON s.artist = ar.id
 JOIN top_songs ts 
     ON ts.artist = s.artist AND ts.album = s.album AND ts.rn = 1
+WHERE ar.id IS NOT NULL
+  AND ar.id <> 'Unknown'
+  AND ar.id <> 'undefined'
 GROUP BY al.name, ar.name, ts.name, ts."image", ts.album, ts.id
 ORDER BY total_listens DESC
 LIMIT 5;

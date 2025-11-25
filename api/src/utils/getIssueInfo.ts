@@ -1,6 +1,6 @@
 import constants from '#constants'
 
-export default async function getIssueInfo(itemNodeId: string): Promise<{ issueTitle: string; repoName: string; projectName: string }> {
+export default async function getIssueInfo(itemNodeId: string): Promise<{ issueTitle: string; repoName: string; projectName: string; color: string }> {
     const query = `
         query($nodeId: ID!) {
             node(id: $nodeId) {
@@ -15,6 +15,14 @@ export default async function getIssueInfo(itemNodeId: string): Promise<{ issueT
                     }
                     project {
                         title
+                    }
+                    fieldValues(first: 10) {
+                        nodes {
+                            ... on ProjectV2ItemFieldSingleSelectValue {
+                                name
+                                color
+                            }
+                        }
                     }
                 }
             }
@@ -42,8 +50,9 @@ export default async function getIssueInfo(itemNodeId: string): Promise<{ issueT
         const issueTitle = data.data.node?.content?.title || 'Unknown Issue'
         const repoName = data.data.node?.content?.repository?.name || 'Unknown Repo'
         const projectName = data.data.node?.project?.title || 'Unknown Project'
-        return { issueTitle, repoName, projectName }
+        const color = data.data.node?.fieldValues?.nodes?.find((f: {color?: string}) => f.color)?.color || 'default'
+        return { issueTitle, repoName, projectName, color }
     } catch {
-        return { issueTitle: 'Unknown Issue', repoName: 'Unknown Repo', projectName: 'Unknown Project' }
+        return { issueTitle: 'Unknown Issue', repoName: 'Unknown Repo', projectName: 'Unknown Project', color: 'default' }
     }
 }

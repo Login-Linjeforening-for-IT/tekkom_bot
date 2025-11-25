@@ -4,7 +4,7 @@ export default async function templates(thread: ThreadChannel) {
     // Template for '#pr-kontakt'
     if (thread.parent?.name === 'pr-kontakt') {
         return await thread.send({
-            content: 'Husk å ha med:\n```\nTittel: Thread tittel skal være arrangement / grunn for kontakt\nSted (Hvor skjer det?):\nDato og klokkeslett (Når skjer det?):\nBeskrivelse/promotekst (Hva er det?):\nRelease dato (Når er det ønsket at promo postes?):\n```'
+            content: '## Frist for å be om promotering er 2 uker!\nVed å ikke følge denne regelen vil ikke arrangementet ditt bli promotert\n**På både norsk og engelsk:**\n```\nTittel: Thread tittel skal være arrangement / grunn for kontakt\nSted (Hvor skjer det?):\nDato og klokkeslett (Når skjer det?):\nBeskrivelse/promotekst (Hva er det?):\nVi vil etterspørre en bedre promoteringstekst ved tydelig latskap.\nRelease dato (Når er det ønsket at promo postes?):\nFrist for påmelding:\nPåmeldingslenke:\nKapasitet:\nHvordan du ønsker at det skal promoteres:\nVed å ikke følge malen, så vil ikke arrangementet bli promotert:\n```'
         })
     }
 

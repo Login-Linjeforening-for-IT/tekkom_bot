@@ -57,14 +57,20 @@ const rest = new REST({ version: '10' }).setToken(token)
             return
         }
 
-        // Refreshing all commands
+        // Refreshing all commands in specific guild
         const data = await rest.put(
             Routes.applicationGuildCommands(clientId, guildId),
             { body: commands }
         ) as RestData[]
 
+        // Refreshes commands globally (takes up to 1h)
+        await rest.put(
+            Routes.applicationCommands(clientId),
+            { body: commands }
+        ) as RestData[]
+
         console.log(`Successfully reloaded ${data.length} application (/) commands.`)
     } catch (error) {
-        console.log('here', error)
+        console.log(`deployCommands.ts: ${error}`)
     }
 })()

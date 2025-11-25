@@ -3,7 +3,7 @@ import config from '#config'
 
 const tekkomBotApiUrl = config.tekkomBotApiUrl
 const tekkomBotApiToken = config.tekkomBotApiToken
-const LOGIN_GUILD = '284789429539700736'
+const guild = config.guildId
 
 /**
  * Fetches all channels the bot can write to in the 'Login - Linjeforeningen for IT' server
@@ -11,7 +11,7 @@ const LOGIN_GUILD = '284789429539700736'
  * @returns void
  */
 export default async function getAndSendRoles(client: Client): Promise<void> {
-    const GUILD_ID = LOGIN_GUILD
+    const GUILD_ID = guild
     const data: { name: string, id: string, color: string }[] = []
 
     try {
@@ -23,7 +23,7 @@ export default async function getAndSendRoles(client: Client): Promise<void> {
 
         const roles = await guild.roles.fetch()
         roles.forEach((role: Role) => {
-            if (role.name === '@everyone' || role.id === '284789429539700736') {
+            if (role.name === '@everyone' || role.id === GUILD_ID) {
                 return
             }
 

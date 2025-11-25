@@ -12,14 +12,21 @@ type RemoveProps = {
     user: User
 }
 
+function getEmojiKey(emojiStr: string): string {
+    const match = emojiStr.match(/^<a?:([^:]+):(\d+)>$/)
+    if (match) return match[1]
+    return emojiStr
+}
+
 export default function addRole({collector, guild, roles, icons}: CollectProps) {
     collector.on('collect', async (reaction: Reaction, user: User) => {
         const member = await guild.members.fetch(user.id)
         const emoji = reaction._emoji.name
-        const reactionEmoji = emoji.length < 4 ? emoji.slice(0, 2).trim() : emoji.trim()
+        const reactionEmoji = emoji.trim()
 
         for (let i = 0; i < icons.length; i++) {
-            if (icons[i].trim() === reactionEmoji) {
+            const iconKey = getEmojiKey(icons[i])
+            if (iconKey === reactionEmoji) {
                 await member.roles.add(roles[i])
                 break
             }
@@ -38,7 +45,7 @@ export async function removeRole({reaction, user}: RemoveProps) {
     )
 
     const emoji = reaction._emoji.name
-    const reactionEmoji = emoji.length < 4 ? emoji.slice(0, 2).trim() : emoji.trim()
+    const reactionEmoji = emoji.trim()
 
     for (let i = 0; i < icons.length; i++) {
         if (icons[i].trim() === reactionEmoji) {

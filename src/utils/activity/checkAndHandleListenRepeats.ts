@@ -1,13 +1,13 @@
+import config from '#config'
 import { DiscordClient } from '#interfaces'
 import sendListen from '#utils/activity/sendListen.ts'
-
-const { DISCORD_GUILD_ID } = process.env
 
 export default async function checkAndHandleListenRepeats(
     client: DiscordClient,
     lastListens: LastListens
 ) {
-    const guild = client.guilds.cache.get(DISCORD_GUILD_ID ?? '')
+    const guild = client.guilds.cache.get(config.guildId)
+        ?? await client.guilds.fetch(config.guildId).catch(() => null)
     if (!guild) {
         throw new Error('Guild missing in checkAndHandleListenRepeats, check env variables.')
     }

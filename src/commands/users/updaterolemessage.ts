@@ -7,7 +7,8 @@ import {
     ChatInputCommandInteraction,
     User,
     Role,
-    MessageFlags
+    MessageFlags,
+    TextChannel
 } from 'discord.js'
 
 export const data = new SlashCommandBuilder()
@@ -32,6 +33,11 @@ export const data = new SlashCommandBuilder()
     .addStringOption((option) => option
         .setName('id')
         .setDescription('ID of the message to update')
+    )
+    .addChannelOption((option) => option
+        .setName('channel')
+        .setDescription('Channel where the message is located (defaults to current)')
+        .setRequired(false)
     )
 
 export async function execute(message: ChatInputCommandInteraction) {
@@ -88,6 +94,9 @@ export async function execute(message: ChatInputCommandInteraction) {
         })
     }
 
+    const channelOption = message.options.getChannel('channel')
+    const targetChannel = (channelOption as TextChannel) || (message.channel as TextChannel)
+
     await message.reply({
         content: 'Working...',
         flags: MessageFlags.Ephemeral
@@ -129,14 +138,20 @@ export async function execute(message: ChatInputCommandInteraction) {
         .addFields({name, value})
 
     // Fetches message
-    const roleMessage = await message.channel?.messages.fetch(messageID)
+    let roleMessage
+    try {
+        roleMessage = await targetChannel?.messages.fetch(messageID)
+    } catch {
+        return await message.editReply(`Message with ID ${messageID} not found in the specified channel.`)
+    }
+
     if (!roleMessage) {
-        return await message.editReply(`Message with ID ${messageID} not found.`)
+        return await message.editReply(`Message with ID ${messageID} not found in the specified channel.`)
     }
 
     const response = await roleMessage.edit({ embeds: [embed]})
 
-    storedEmbeds.push({'channelID': message.channelId, 'message': response.id})
+    storedEmbeds.push({'channelID': targetChannel.id, 'message': response.id})
 
     for (let i = 0; i < roleIcons.length; i++) {
         response.react(roleIcons[i])

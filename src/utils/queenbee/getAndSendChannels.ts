@@ -4,7 +4,7 @@ import config from '#config'
 
 const tekkomBotApiUrl = config.tekkomBotApiUrl
 const tekkomBotApiToken = config.tekkomBotApiToken
-const LOGIN_GUILD = '284789429539700736'
+const guild = config.guildId
 
 /**
  * Fetches all channels the bot can write to in the 'Login - Linjeforeningen for IT' server
@@ -12,7 +12,7 @@ const LOGIN_GUILD = '284789429539700736'
  * @returns void
  */
 export default async function getAndSendTextChannels(client: Client): Promise<void> {
-    const GUILD_ID = LOGIN_GUILD
+    const GUILD_ID = guild
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any[] = []
 

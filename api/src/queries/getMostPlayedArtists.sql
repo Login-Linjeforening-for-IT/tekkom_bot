@@ -28,5 +28,8 @@ SELECT
 FROM artist_counts ac
 JOIN artists ar ON ac.artist = ar.id
 LEFT JOIN top_songs ts ON ac.artist = ts.artist
+WHERE ar.id IS NOT NULL
+  AND ar.id <> 'Unknown'
+  AND ar.id <> 'undefined'
 ORDER BY ac.listens DESC
 LIMIT 5;

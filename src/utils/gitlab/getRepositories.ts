@@ -6,7 +6,7 @@ export default async function getRepositories(limit: number, query: string): Pro
     try {
         logNullValue('getRepositories', ['limit'], [limit])
         const search = query ? `&search=${query}` : ''
-        const response = await fetch(`${GITLAB_API}projects?simple=true${search}`, {
+        const response = await fetch(`${GITLAB_API}projects?simple=true&archived=false${search}`, {
             headers: {
                 'Private-Token': config.privateToken
             }

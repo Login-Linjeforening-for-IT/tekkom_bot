@@ -29,5 +29,8 @@ FROM artist_skips ak
 JOIN artists ar ON ak.artist_id = ar.id
 LEFT JOIN top_songs ts ON ak.artist_id = ts.artist_id
 LEFT JOIN albums al ON ts.album_id = al.id
+WHERE ar.id IS NOT NULL
+  AND ar.id <> 'Unknown'
+  AND ar.id <> 'undefined'
 ORDER BY ak.skips DESC
 LIMIT 5;
