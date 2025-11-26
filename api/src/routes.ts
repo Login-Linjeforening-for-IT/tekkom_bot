@@ -16,6 +16,9 @@ import postHideActivity from './handlers/activity/postHide.ts'
 import postGame from './handlers/activity/postGame.ts'
 import getTrackPreview from './handlers/spotify/get.ts'
 import postIssue from './handlers/issue/post.ts'
+import getDebt from './handlers/debt/get.ts'
+import postDebt from './handlers/debt/post.ts'
+import deleteDebt from './handlers/debt/delete.ts'
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify'
 import getGameActivity from './handlers/activity/getGame.ts'
 
@@ -55,4 +58,9 @@ export default async function apiRoutes(fastify: FastifyInstance, _: FastifyPlug
 
     // issue
     fastify.post('/issue', postIssue)
+
+    // debt
+    fastify.get('/debt', getDebt)
+    fastify.post('/debt', postDebt)
+    fastify.delete('/debt', deleteDebt)
 }

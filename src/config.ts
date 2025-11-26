@@ -26,7 +26,8 @@ const {
     TEKKOM_BOT_API_TOKEN,
     HEARTBEAT_URL,
     TEKKOM_BOT_BTG_TOKEN,
-    KUBERNETES_SERVICE_PORT
+    KUBERNETES_SERVICE_PORT,
+    DISCORD_TEKKOM_VERV_CHANNEL_ID
 } = process.env
 
 // Throws an error if any of the essential environment variables are missing
@@ -82,7 +83,8 @@ const config = {
     tekkomBotApiToken: TEKKOM_BOT_API_TOKEN,
     tekkomBotBtgToken: TEKKOM_BOT_BTG_TOKEN,
     heartbeatUrl: HEARTBEAT_URL,
-    kubernetesServicePort: KUBERNETES_SERVICE_PORT
+    kubernetesServicePort: KUBERNETES_SERVICE_PORT,
+    tekkomVervChannelId: DISCORD_TEKKOM_VERV_CHANNEL_ID
 }
 
 // Exports the config object

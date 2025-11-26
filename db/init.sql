@@ -139,6 +139,14 @@ CREATE TABLE IF NOT EXISTS "hidden" (
     name TEXT UNIQUE NOT NULL
 );
 
+-- Debt
+CREATE TABLE IF NOT EXISTS debt (
+    id SERIAL PRIMARY KEY,
+    user_id TEXT NOT NULL UNIQUE,
+    amount INT NOT NULL CHECK (amount > 0),
+    timestamp TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- Optimalizations
 CREATE INDEX idx_listens_timestamp_desc ON listens ("timestamp" DESC);
 CREATE INDEX idx_songs_listens_skips ON songs (listens, skips);
