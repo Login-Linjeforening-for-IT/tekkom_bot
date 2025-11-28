@@ -1,5 +1,5 @@
 services:
-  tekkom-bot:
+  tekkom_bot:
     restart: always
     build:
       context: .
@@ -7,8 +7,8 @@ services:
     volumes:
       - .:/app
 
-  tekkom-bot_api:
-    container_name: tekkom-bot_api 
+  tekkom_bot_api:
+    container_name: tekkom_bot_api 
     image: tekkom-bot-api
     restart: always
     build:
