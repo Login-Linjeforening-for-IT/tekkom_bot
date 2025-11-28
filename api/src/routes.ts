@@ -1,3 +1,4 @@
+import type { FastifyInstance, FastifyPluginOptions } from 'fastify'
 import getAnnouncements from './handlers/announcements/get.ts'
 import postAnnouncements from './handlers/announcements/post.ts'
 import putAnnouncements from './handlers/announcements/put.ts'
@@ -19,7 +20,6 @@ import postIssue from './handlers/issue/post.ts'
 import getDebt from './handlers/debt/get.ts'
 import postDebt from './handlers/debt/post.ts'
 import deleteDebt from './handlers/debt/delete.ts'
-import type { FastifyInstance, FastifyPluginOptions } from 'fastify'
 import getGameActivity from './handlers/activity/getGame.ts'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
