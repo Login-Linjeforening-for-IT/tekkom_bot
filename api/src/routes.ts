@@ -21,11 +21,19 @@ import getDebt from './handlers/debt/get.ts'
 import postDebt from './handlers/debt/post.ts'
 import deleteDebt from './handlers/debt/delete.ts'
 import getGameActivity from './handlers/activity/getGame.ts'
+import getToken from './handlers/auth/token.ts'
+import getLogin from './handlers/auth/login.ts'
+import getCallback from './handlers/auth/callback.ts'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function apiRoutes(fastify: FastifyInstance, _: FastifyPluginOptions) {
     // index
     fastify.get('/', getIndex)
+
+    // auth
+    fastify.get('/token', getToken)
+    fastify.get('/login', getLogin)
+    fastify.get('/callback', getCallback)
 
     // channels
     fastify.get('/channels', getChannels)
