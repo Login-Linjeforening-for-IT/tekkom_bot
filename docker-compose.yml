@@ -7,7 +7,7 @@ services:
     volumes:
       - .:/app
 
-  tekkom-bot-api:
+  tekkom-bot_api:
     container_name: tekkom-bot_api 
     image: tekkom-bot-api
     restart: always
