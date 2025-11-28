@@ -23,7 +23,7 @@ services:
 
   postgres:
     image: postgres:15
-    container_name: tekkom-bot_database
+    container_name: tekkom_bot_database
     restart: always
     environment:
       POSTGRES_USER: ${DB_USER:-tekkom-bot}
