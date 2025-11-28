@@ -44,8 +44,6 @@ const env = Object.fromEntries(
 
 const AUTH_URL = `${env.AUTHENTIK_API_URL}/application/o/authorize/`
 const TOKEN_URL = `${env.AUTHENTIK_API_URL}/application/o/token/`
-// const USERINFO_URL = `${env.AUTHENTIK_API_URL}/application/o/userinfo/`
-// const USER_ENDPOINT = `${env.AUTHENTIK_API_URL}/api/v3/core/users/`
 
 const config = {
     USERINFO_URL: `${env.AUTHENTIK_API_URL}/application/o/userinfo/`,
@@ -79,9 +77,7 @@ const config = {
     SPOTIFY_API_TRACK_URL: 'https://api.spotify.com/v1/tracks',
     SPOTIFY_API_EPISODE_URL: 'https://api.spotify.com/v1/episodes',
     SPOTIFY_API_TOKEN_URL: 'https://accounts.spotify.com/api/token',
-    SPOTIFY_API_TOKEN: Buffer.from(
-        `${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`
-    ).toString('base64'),
+    SPOTIFY_API_TOKEN: btoa(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`)
 }
 
 export default config
