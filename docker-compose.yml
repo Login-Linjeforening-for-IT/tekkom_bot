@@ -1,5 +1,6 @@
 services:
   tekkom_bot:
+    container_name: tekkom_bot
     image: tekkom_bot
     restart: always
     build:
