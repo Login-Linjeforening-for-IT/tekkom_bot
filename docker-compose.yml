@@ -1,15 +1,18 @@
 services:
   tekkom_bot:
+    image: tekkom_bot
     restart: always
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
       - .:/app
+    depends_on:
+      - tekkom_bot_api
 
   tekkom_bot_api:
     container_name: tekkom_bot_api 
-    image: tekkom-bot-api
+    image: tekkom_bot_api
     restart: always
     build:
       context: ./api
