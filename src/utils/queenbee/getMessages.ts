@@ -1,11 +1,10 @@
 import config from '#config'
 
-const tekkomBotApiUrl = config.tekkomBotApiUrl
 const tekkomBotApiToken = config.tekkomBotApiToken
 
 export default async function getMessages() {
     try {
-        const url = new URL(`${tekkomBotApiUrl}/announcements`)
+        const url = new URL(`${config.api}/announcements`)
         url.searchParams.set('shouldBeSent', 'true')
         url.searchParams.set('active', 'true')
         const response = await fetch(url.toString(), {

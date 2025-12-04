@@ -23,6 +23,7 @@ const requiredEnvironmentVariables = [
     'SPOTIFY_CLIENT_SECRET',
     'GITHUB_TOKEN',
     'GITHUB_WEBHOOK_SECRET',
+    'ZAMMAD_TOKEN'
 ]
 
 const missingVariables = requiredEnvironmentVariables.filter(
@@ -32,9 +33,9 @@ const missingVariables = requiredEnvironmentVariables.filter(
 if (missingVariables.length > 0) {
     throw new Error(
         'Missing essential environment variables:\n' +
-      missingVariables
-          .map((key) => `${key}: ${process.env[key] || 'undefined'}`)
-          .join('\n')
+        missingVariables
+            .map((key) => `${key}: ${process.env[key] || 'undefined'}`)
+            .join('\n')
     )
 }
 
@@ -77,7 +78,9 @@ const config = {
     SPOTIFY_API_TRACK_URL: 'https://api.spotify.com/v1/tracks',
     SPOTIFY_API_EPISODE_URL: 'https://api.spotify.com/v1/episodes',
     SPOTIFY_API_TOKEN_URL: 'https://accounts.spotify.com/api/token',
-    SPOTIFY_API_TOKEN: btoa(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`)
+    SPOTIFY_API_TOKEN: btoa(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`),
+    ZAMMAD_TOKEN: env.ZAMMAD_TOKEN,
+    ZAMMAD_API: 'https://zammad.login.no/api/v1'
 }
 
 export default config

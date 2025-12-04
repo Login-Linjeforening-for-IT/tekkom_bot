@@ -1,11 +1,10 @@
 import config from '#config'
 
-const tekkomBotApiUrl = config.tekkomBotApiUrl
 const tekkomBotBtgToken = config.tekkomBotBtgToken
 
 export default async function postBtg(name: string, service: string, author: string): Promise<boolean> {
     try {
-        const response = await fetch(`${tekkomBotApiUrl}/btg`, {
+        const response = await fetch(`${config.api}/btg`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,11 +1,10 @@
 import config from '#config'
 
-const tekkomBotApiUrl = config.tekkomBotApiUrl
 const tekkomBotBtgToken = config.tekkomBotBtgToken
 
 export default async function getBtg(): Promise<Btg[]> {
     try {
-        const response = await fetch(`${tekkomBotApiUrl}/btg`, {
+        const response = await fetch(`${config.api}/btg`, {
             headers: {
                 'Content-Type': 'application/json',
                 'btg': 'tekkom_bot_btg',

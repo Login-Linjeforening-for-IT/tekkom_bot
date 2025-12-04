@@ -1,7 +1,6 @@
 import { Client, Role } from 'discord.js'
 import config from '#config'
 
-const tekkomBotApiUrl = config.tekkomBotApiUrl
 const tekkomBotApiToken = config.tekkomBotApiToken
 const guild = config.guildId
 
@@ -34,7 +33,7 @@ export default async function getAndSendRoles(client: Client): Promise<void> {
             })
         })
 
-        const response = await fetch(`${tekkomBotApiUrl}/roles`, {
+        const response = await fetch(`${config.api}/roles`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${tekkomBotApiToken}`,

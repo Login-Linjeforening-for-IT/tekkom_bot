@@ -80,7 +80,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         const user = interaction.options.getUser('user')!
         const amount = interaction.options.getInteger('amount')!
 
-        const response = await fetch(`${config.tekkomBotApiUrl}/debt`, {
+        const response = await fetch(`${config.api}/debt`, {
             method: 'POST',
             headers,
             body: JSON.stringify({
@@ -96,7 +96,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         await interaction.editReply(`Added ${amount} pack${amount > 1 ? 's' : ''} of debt to ${user.displayName}.`)
 
     } else if (subcommand === 'show') {
-        const response = await fetch(`${config.tekkomBotApiUrl}/debt`, {
+        const response = await fetch(`${config.api}/debt`, {
             headers
         })
 
@@ -140,7 +140,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
             body.amount = amount
         }
 
-        const response = await fetch(`${config.tekkomBotApiUrl}/debt`, {
+        const response = await fetch(`${config.api}/debt`, {
             method: 'DELETE',
             headers,
             body: JSON.stringify(body)

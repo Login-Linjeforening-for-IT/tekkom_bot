@@ -2,7 +2,6 @@ import { ChannelType, Client, PermissionsBitField } from 'discord.js'
 import type { NonThreadGuildBasedChannel } from 'discord.js'
 import config from '#config'
 
-const tekkomBotApiUrl = config.tekkomBotApiUrl
 const tekkomBotApiToken = config.tekkomBotApiToken
 const guild = config.guildId
 
@@ -43,7 +42,7 @@ export default async function getAndSendTextChannels(client: Client): Promise<vo
             }
         })
 
-        const response = await fetch(`${tekkomBotApiUrl}/channels`, {
+        const response = await fetch(`${config.api}/channels`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${tekkomBotApiToken}`,

@@ -18,7 +18,6 @@ const {
     MINECRAFT_SURVIVAL_PORT,
     MINECRAFT_CREATIVE_PORT,
     MINECRAFT_PORT,
-    API,
     PRIVATE_TOKEN,
     GITHUB_TOKEN,
     DISCORD_SERVICE_MONITORING_CHANNEL_ID,
@@ -45,7 +44,6 @@ if (
     || !MINECRAFT_SURVIVAL_PORT
     || !MINECRAFT_CREATIVE_PORT
     || !MINECRAFT_PORT
-    || !API
     || !PRIVATE_TOKEN
     || !GITHUB_TOKEN
     || !TEKKOM_BOT_API_URL
@@ -76,15 +74,14 @@ const config = {
             name: MINECRAFT_CREATIVE
         }
     ],
-    api: API,
     privateToken: PRIVATE_TOKEN,
     githubToken: GITHUB_TOKEN,
-    tekkomBotApiUrl: TEKKOM_BOT_API_URL,
+    api: TEKKOM_BOT_API_URL,
     tekkomBotApiToken: TEKKOM_BOT_API_TOKEN,
     tekkomBotBtgToken: TEKKOM_BOT_BTG_TOKEN,
     heartbeatUrl: HEARTBEAT_URL,
     kubernetesServicePort: KUBERNETES_SERVICE_PORT,
-    tekkomVervChannelId: DISCORD_TEKKOM_VERV_CHANNEL_ID
+    tekkomVervChannelId: DISCORD_TEKKOM_VERV_CHANNEL_ID,
 }
 
 // Exports the config object

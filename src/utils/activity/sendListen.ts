@@ -17,7 +17,7 @@ export default async function sendListen({
     skipped,
 }: SendActivity): Promise<{ message: string } | { error: unknown, message: string }> {
     try {
-        const response = await fetch(`${config.tekkomBotApiUrl}/activity/listen`, {
+        const response = await fetch(`${config.api}/activity/listen`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

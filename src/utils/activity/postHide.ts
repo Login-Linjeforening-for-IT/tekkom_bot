@@ -4,7 +4,7 @@ const tekkomBotApiToken = config.tekkomBotApiToken
 
 export default async function postHide(user: string) {
     try {
-        const response = await fetch(`${config.tekkomBotApiUrl}/activity/hide`, {
+        const response = await fetch(`${config.api}/activity/hide`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

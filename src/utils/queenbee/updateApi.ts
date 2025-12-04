@@ -1,6 +1,5 @@
 import config from '#config'
 
-const tekkomBotApiUrl = config.tekkomBotApiUrl
 const tekkomBotApiToken = config.tekkomBotApiToken
 
 export default async function updateApi(messages: Announcement[]) {
@@ -10,7 +9,7 @@ export default async function updateApi(messages: Announcement[]) {
         }
 
         const ids = messages.map((message) => message.id)
-        const response = await fetch(`${tekkomBotApiUrl}/sent`, {
+        const response = await fetch(`${config.api}/sent`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${tekkomBotApiToken}`,
