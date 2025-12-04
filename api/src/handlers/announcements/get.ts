@@ -17,7 +17,7 @@ type GetAnnouncements = {
 
 export default async function getAnnouncements(req: FastifyRequest, res: FastifyReply) {
     const { id, search, offset, limit, active, shouldBeSent, includePlaceholders } =  (req.query as GetAnnouncements) ?? {}
-    const { valid } = await tokenWrapper(req, res, ['tekkom-bot'])
+    const { valid } = await tokenWrapper(req, res, ['tekkom_bot'])
     if (!valid) {
         return res.status(400).send({ error: 'Unauthorized' })
     }

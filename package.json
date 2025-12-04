@@ -1,5 +1,5 @@
 {
-    "name": "tekkom-bot",
+    "name": "tekkom_bot",
     "version": "2.16.0",
     "description": "TekKom Bot",
     "main": "app.js",

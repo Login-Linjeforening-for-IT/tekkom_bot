@@ -25,7 +25,7 @@ export default async function postListen(
         skipped,
     } = (req.body as Activity) ?? {}
 
-    const { valid } = await tokenWrapper(req, res, ['tekkom-bot'])
+    const { valid } = await tokenWrapper(req, res, ['tekkom_bot'])
     if (!valid) {
         return res.status(400).send({ error: 'Unauthorized' })
     }

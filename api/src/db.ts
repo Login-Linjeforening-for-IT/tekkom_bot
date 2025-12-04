@@ -13,9 +13,9 @@ const {
 } = config
 const { Pool } = pg
 const pool = new Pool({
-    user: DB_USER || 'tekkom-bot',
+    user: DB_USER || 'tekkom_bot',
     host: DB_HOST,
-    database: DB || 'tekkom-bot',
+    database: DB || 'tekkom_bot',
     password: DB_PASSWORD,
     port: Number(DB_PORT) || 5432,
     max: Number(DB_MAX_CONN) || 20,

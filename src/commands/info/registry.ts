@@ -22,7 +22,7 @@ export async function execute(message: ChatInputCommandInteraction) {
             {name: '**[REMOTE]**', value: 'docker image pull registry.gitlab.login.no/<repository>:latest', inline: true},
             {name: '**Description**', value: 'Updates the image to the latest version in the registry.', inline: true},
             {name: ' ', value: ' ', inline: false},
-            {name: '**[REMOTE]**', value: 'docker service update --with-registry-auth --image registry.gitlab.login.no/tekkom/playground/tekkom-bot:latest tekkom-bot', inline: true},
+            {name: '**[REMOTE]**', value: 'docker service update --with-registry-auth --image registry.gitlab.login.no/tekkom/playground/tekkom_bot:latest tekkom_bot', inline: true},
             {name: '**Description**', value: 'Updates the docker service specified, effectively puts the latest version into production.', inline: true},
         )
     await message.reply({ embeds: [embed]})

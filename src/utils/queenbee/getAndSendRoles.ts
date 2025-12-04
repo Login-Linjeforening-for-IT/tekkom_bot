@@ -38,7 +38,7 @@ export default async function getAndSendRoles(client: Client): Promise<void> {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${tekkomBotApiToken}`,
-                'btg': 'tekkom-bot',
+                'btg': 'tekkom_bot',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)

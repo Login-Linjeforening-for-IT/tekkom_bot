@@ -4,7 +4,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export default async function postChannels(req: FastifyRequest, res: FastifyReply) {
     const newChannels = req.body as Channel[] ?? []
-    const { valid } = await tokenWrapper(req, res, ['tekkom-bot'])
+    const { valid } = await tokenWrapper(req, res, ['tekkom_bot'])
 
     if (!valid) {
         return res.status(400).send({ error: 'Unauthorized' })

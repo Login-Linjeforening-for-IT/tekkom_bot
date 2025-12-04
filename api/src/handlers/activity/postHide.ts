@@ -4,7 +4,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export default async function postHideActivity(req: FastifyRequest, res: FastifyReply) {
     const { user } = req.body as { user: string } ?? {}
-    const { valid } = await tokenWrapper(req, res, ['tekkom-bot'])
+    const { valid } = await tokenWrapper(req, res, ['tekkom_bot'])
     if (!valid) {
         return res.status(400).send({ error: 'Unauthorized' })
     }

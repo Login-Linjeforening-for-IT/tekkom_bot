@@ -47,7 +47,7 @@ export default async function getAndSendTextChannels(client: Client): Promise<vo
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${tekkomBotApiToken}`,
-                'btg': 'tekkom-bot',
+                'btg': 'tekkom_bot',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)

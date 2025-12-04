@@ -9,7 +9,7 @@ export default async function postHide(user: string) {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${tekkomBotApiToken}`,
-                'btg': 'tekkom-bot',
+                'btg': 'tekkom_bot',
             },
             body: JSON.stringify({ user })
         })

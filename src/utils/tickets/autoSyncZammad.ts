@@ -122,7 +122,7 @@ function compare(discordMessages: ReducedMessage[], zammadMessages: ReducedMessa
 
     // Finds messages from Discord that are relevant for further checking
     for (const message of discordMessages) {
-        // Removes messages created by tekkom-bot
+        // Removes messages created by tekkom_bot
         if (message.user !== 'discord-bot' && message.user !== 'tekkom-bot') {
             relevantDiscord.push(message)
         }

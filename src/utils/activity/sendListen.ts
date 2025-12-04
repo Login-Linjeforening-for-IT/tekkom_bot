@@ -22,7 +22,7 @@ export default async function sendListen({
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${tekkomBotApiToken}`,
-                'btg': 'tekkom-bot',
+                'btg': 'tekkom_bot',
             },
             body: JSON.stringify({
                 id,

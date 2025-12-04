@@ -14,7 +14,7 @@ export default async function updateApi(messages: Announcement[]) {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${tekkomBotApiToken}`,
-                'btg': 'tekkom-bot',
+                'btg': 'tekkom_bot',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(ids)

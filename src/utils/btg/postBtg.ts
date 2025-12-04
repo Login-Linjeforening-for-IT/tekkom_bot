@@ -9,7 +9,7 @@ export default async function postBtg(name: string, service: string, author: str
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'btg': 'tekkom-bot-btg',
+                'btg': 'tekkom_bot_btg',
                 'Authorization': `Bearer ${tekkomBotBtgToken}`
             },
             body: JSON.stringify({ name, service, author })

@@ -1,5 +1,5 @@
 {
-  "name": "tekkom-bot-api",
+  "name": "tekkom_bot_api",
   "version": "2.16.0",
   "main": "index.js",
   "scripts": {

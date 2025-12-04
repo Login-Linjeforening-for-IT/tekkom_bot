@@ -72,7 +72,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
     const headers = {
         'Authorization': `Bearer ${config.tekkomBotApiToken}`,
-        'btg': 'tekkom-bot',
+        'btg': 'tekkom_bot',
         'Content-Type': 'application/json'
     }
 

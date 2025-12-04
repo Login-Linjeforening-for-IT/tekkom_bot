@@ -52,7 +52,7 @@ export default async function continueRelease({ message, embed, id, tag, reposit
                     relevant.push(mr)
                 } else if (match[0].includes(`${normalizedQuery.replaceAll(' ', '-')}/`)) {
                     // two divided repository edge case
-                    // tekkom bot vs tekkom-bot/api -> true
+                    // tekkom bot vs tekkom_bot/api -> true
                     relevant.push(mr)
                 } else if (match[0].includes(`${normalizedQuery}/`)) {
                     // two divided repository edge case
@@ -62,10 +62,10 @@ export default async function continueRelease({ message, embed, id, tag, reposit
                     // "Beehive Frontend" vs "beehive/frontend " -> "beehive/frontend" === "beehive/frontend" -> true
                     relevant.push(mr)
                 } else {
-                    // tekkom-bot v2 vs tekkombotv2 -> true
-                    const match1 = match[1].replaceAll('-', '')
+                    // tekkom_bot v2 vs tekkombotv2 -> true
+                    const match1 = match[1].replaceAll('_', '')
                     const broadMatch = match1.replaceAll(' ', '')
-                    const query1 = normalizedQuery.replaceAll('-', '')
+                    const query1 = normalizedQuery.replaceAll('_', '')
                     const broadNormalizedQuery = query1.replaceAll(' ', '')
 
                     if (broadMatch === broadNormalizedQuery) {

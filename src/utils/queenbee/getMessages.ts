@@ -11,7 +11,7 @@ export default async function getMessages() {
         const response = await fetch(url.toString(), {
             headers: {
                 'Content-Type': 'application/json',
-                'btg': 'tekkom-bot',
+                'btg': 'tekkom_bot',
                 'Authorization': `Bearer ${tekkomBotApiToken}`
             }
         })

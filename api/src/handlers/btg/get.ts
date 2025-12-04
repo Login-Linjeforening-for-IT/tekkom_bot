@@ -5,7 +5,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export default async function getBtg(req: FastifyRequest, res: FastifyReply) {
     const { name, service, author } =  (req.query as Btg) ?? {}
-    const { valid } = await tokenWrapper(req, res, ['tekkom-bot-btg'])
+    const { valid } = await tokenWrapper(req, res, ['tekkom_bot_btg'])
     if (!valid) {
         return res.status(400).send({ error: 'Unauthorized' })
     }
