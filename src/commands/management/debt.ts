@@ -61,11 +61,11 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     const isAllowed = (interaction.member?.roles as unknown as Roles)?.cache.some((role: Role) => role.id === config.roleID)
 
     if (!isAllowed) {
-        return await interaction.reply('Unauthorized.')
+        return await interaction.reply({ content: 'Unauthorized.', ephemeral: true })
     }
 
     if (interaction.channelId !== config.tekkomVervChannelId!) {
-        return await interaction.reply('This command can only be used in the TekKom verv channel.')
+        return await interaction.reply({ content: 'This command can only be used in the tekkom-verv-møte channel.', ephemeral: true })
     }
 
     await interaction.deferReply()
@@ -90,7 +90,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         })
 
         if (!response.ok) {
-            return await interaction.editReply('Failed to add debt.')
+            await interaction.deleteReply().catch(() => {})
+            return await interaction.followUp({ content: 'Failed to add debt.', ephemeral: true })
         }
 
         await interaction.editReply(`Added ${amount} pack${amount > 1 ? 's' : ''} of debt to ${user.displayName}.`)
@@ -101,7 +102,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         })
 
         if (!response.ok) {
-            return await interaction.editReply('Failed to fetch debt.')
+            await interaction.deleteReply().catch(() => {})
+            return await interaction.followUp({ content: 'Failed to fetch debt.', ephemeral: true })
         }
 
         const debts: DebtRow[] = await response.json()
@@ -111,17 +113,17 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         }
 
         const embed = new EmbedBuilder()
-            .setTitle(':gifflarcrumbs: Gifflar Debt :gifflarcrumbs:')
+            .setTitle('<:gifflarcrumbs:1443288386788917469> Gifflar Debt <:gifflarcrumbs:1443288386788917469>')
             .setColor('#fd8738')
             .setTimestamp()
 
         const userPromises = debts.map(async (row) => {
             try {
                 const packs = row.amount
-                return `<@${row.user_id}>: ${packs} pack${packs > 1 ? 's' : ''} :gifflar: `
+                return `<@${row.user_id}>: ${packs} pack${packs > 1 ? 's' : ''} <:gifflar:1443288439263989873>`
             } catch {
                 const packs = row.amount
-                return `<@${row.user_id}>: ${packs} pack${packs > 1 ? 's' : ''} :gifflar: `
+                return `<@${row.user_id}>: ${packs} pack${packs > 1 ? 's' : ''} <:gifflar:1443288439263989873>`
             }
         })
 
@@ -148,7 +150,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
 
         if (!response.ok) {
             const error = await response.json()
-            return await interaction.editReply(error.error || 'Failed to remove debt.')
+            await interaction.deleteReply().catch(() => {})
+            return await interaction.followUp({ content: error.error || 'Failed to remove debt.', ephemeral: true })
         }
 
         if (amount !== null) {
