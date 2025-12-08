@@ -72,7 +72,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     const repositories = await getRepositories(25, repository)
 
     // Aborts if the channel isnt a tekkom-kontakt channel and the user is not allowed anywhere
-    if ((!interaction.channel || !('name' in interaction.channel) || !interaction.channel.name?.toLocaleLowerCase().includes('tekkom-kontakt')) && !isAllowedAnywhere ) {
+    if ((!interaction.channel || !('name' in interaction.channel) || !interaction.channel.name?.toLocaleLowerCase().includes('tekkom-kontakt')) && !isAllowedAnywhere) {
         return await interaction.reply({ content: 'This isnt a tekkom-kontakt channel.', flags: MessageFlags.Ephemeral })
     }
 

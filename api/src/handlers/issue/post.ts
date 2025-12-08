@@ -32,11 +32,9 @@ export default async function postIssue(req: FastifyRequest, res: FastifyReply) 
     const eventType = req.headers['x-github-event']
     if (eventType === 'ping') {
         return res.status(200).send({ msg: 'pong' })
-    }
-    else if (eventType === 'push') {
+    } else if (eventType === 'push') {
         return res.status(202).send({ msg: 'Ignoring push events' })
-    }
-    else if (eventType !== 'projects_v2_item') {
+    } else if (eventType !== 'projects_v2_item') {
         return res.status(400).send({ error: 'Invalid event type' })
     }
 
@@ -61,7 +59,7 @@ export default async function postIssue(req: FastifyRequest, res: FastifyReply) 
                 `${repoName} • ${projectName} • Action by ${sender.login}`,
                 changes.field_value.to.color
             )
-        } else if ( isEdit && changes.field_value.to.name !== null && changes.field_value.from.name !== null) {
+        } else if (isEdit && changes.field_value.to.name !== null && changes.field_value.from.name !== null) {
             await discordIssue(
                 'Issue moved',
                 `'${issueTitle}'\nMoved to ${changes.field_value.to.name} from ${changes.field_value.from.name}`,

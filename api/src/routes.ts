@@ -74,7 +74,7 @@ export default async function apiRoutes(fastify: FastifyInstance, _: FastifyPlug
     fastify.post('/debt', postDebt)
     fastify.delete('/debt', deleteDebt)
 
-    // DiZamBee
+    // dizambee
     // get
     fastify.get('/dizambee/groups', getGroups)
     fastify.get('/dizambee/users', getUsers)
