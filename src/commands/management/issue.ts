@@ -8,7 +8,7 @@ import {
     MessageFlags
 } from 'discord.js'
 import getRepositories from '#utils/github/getRepositories.ts'
-import createIssueWithStatus from '#utils/github/createIssueWithStatus.ts'
+import create from '#utils/github/createIssueWrapper.ts'
 import sanitize from '#utils/sanitize.ts'
 
 export const data = new SlashCommandBuilder()
@@ -82,33 +82,27 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     let match = null as GithubRepoSearchResultItem | null
     const repositories = await getRepositories(25, repository)
 
-    // Aborts if the channel isnt a tekkom-kontakt channel and the user is not allowed anywhere
     if ((!interaction.channel || !('name' in interaction.channel) || !interaction.channel.name?.toLocaleLowerCase().includes('tekkom-kontakt')) && !isAllowedAnywhere) {
         return await interaction.reply({ content: 'This isnt a tekkom-kontakt channel.', flags: MessageFlags.Ephemeral })
     }
 
-
-    // Tries to find a matching repository
     for (const repo of repositories) {
         if (repo.name === repository) {
             match = repo
         }
     }
 
-    // Aborts if no matching repository exists
     if (!match) {
         return await interaction.reply({ content: `No repository matches '${repository}'.`, flags: MessageFlags.Ephemeral })
     }
 
     try {
-        // Create the issue body with additional metadata
         const issueBody = `${description}` +
             '\n\n---\n' +
             `**Created by:** ${interaction.user.displayName} (${interaction.user.username})\n` +
             '**Created from:** Discord TekKom Bot'
 
-        // Create the GitHub issue with status
-        const issue = await createIssueWithStatus({
+        const issue = await create({
             repositoryId: match.node_id,
             title: title,
             body: issueBody,

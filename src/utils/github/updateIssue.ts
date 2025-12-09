@@ -2,7 +2,7 @@ import { GITHUB_API } from '#constants'
 import config from '#config'
 import getProjectStatusField from './getProjectStatusField.ts'
 
-export default async function updateProjectStatus(projectId: string, itemId: string, statusName: string): Promise<void> {
+export default async function updateStatus(projectId: string, itemId: string, statusName: string): Promise<void> {
     const statusField = await getProjectStatusField(projectId)
 
     if (!statusField) {

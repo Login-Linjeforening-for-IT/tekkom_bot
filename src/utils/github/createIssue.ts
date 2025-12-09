@@ -8,7 +8,7 @@ interface CreateIssueParams {
     projectIds?: string[]
 }
 
-export default async function createIssueGraphQL(params: CreateIssueParams): Promise<{ id: string, number: number, url: string, projectItemId?: string } | null> {
+export default async function createIssue(params: CreateIssueParams): Promise<{ id: string, number: number, url: string, projectItemId?: string } | null> {
     const mutation = `
         mutation($input: CreateIssueInput!) {
             createIssue(input: $input) {

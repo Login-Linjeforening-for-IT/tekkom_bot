@@ -1,7 +1,7 @@
 import { GITHUB_API } from '#constants'
 import config from '#config'
 
-export default async function addProjectItemGraphQL(projectId: string, contentId: string): Promise<string | null> {
+export default async function addProjectItem(projectId: string, contentId: string): Promise<string | null> {
     const mutation = `
         mutation($projectId: ID!, $contentId: ID!) {
             addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
