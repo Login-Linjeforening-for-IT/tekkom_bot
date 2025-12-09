@@ -8,8 +8,7 @@ import {
     MessageFlags
 } from 'discord.js'
 import getRepositories from '#utils/github/getRepositories.ts'
-import postIssue from '#utils/github/postIssue.ts'
-import postProjectItem from '#utils/github/postProjectItem.ts'
+import createIssueWithStatus from '#utils/github/createIssueWithStatus.ts'
 import sanitize from '#utils/sanitize.ts'
 
 export const data = new SlashCommandBuilder()
@@ -56,6 +55,17 @@ export const data = new SlashCommandBuilder()
             )
             .setRequired(true)
     )
+    .addStringOption((option) =>
+        option
+            .setName('status')
+            .setDescription('Status of the issue in the project board.')
+            .addChoices(
+                { name: 'Todo', value: 'Todo' },
+                { name: 'In Progress', value: 'In Progress' },
+                { name: 'Done', value: 'Done' }
+            )
+            .setRequired(false)
+    )
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     const isAllowedAnywhere = (interaction.member?.roles as unknown as Roles)?.cache
@@ -67,6 +77,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     const description = sanitize(interaction.options.getString('description') || '')
     const type = sanitize(interaction.options.getString('type') || 'task')
     const projectType = sanitize(interaction.options.getString('projecttype') || 'dev') as 'dev' | 'infra'
+    const status = sanitize(interaction.options.getString('status') || '')
 
     let match = null as GithubRepoSearchResultItem | null
     const repositories = await getRepositories(25, repository)
@@ -96,25 +107,22 @@ export async function execute(interaction: ChatInputCommandInteraction) {
             `**Created by:** ${interaction.user.displayName} (${interaction.user.username})\n` +
             '**Created from:** Discord TekKom Bot'
 
-        // Create the GitHub issue
-        const issueId = await postIssue(match.name, {
+        // Create the GitHub issue with status
+        const issue = await createIssueWithStatus({
+            repositoryId: match.node_id,
             title: title,
             body: issueBody,
-            type: type
+            projectType: projectType,
+            status: status
         })
 
-        // Try to add the issue to the appropriate project board
-        let projectAdded = false
-        try {
-            await postProjectItem(projectType, issueId)
-            projectAdded = true
-        } catch (error) {
-            console.log(`Failed to add issue to project board: ${error}`)
+        if (!issue) {
+            throw new Error('Failed to create issue')
         }
 
         const embed = new EmbedBuilder()
             .setTitle(`Issue Created: ${title}`)
-            .setURL(match.html_url)
+            .setURL(issue.url)
             .setDescription(description)
             .setTimestamp()
             .setColor('#28a745')
@@ -126,7 +134,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
                 },
                 {
                     name: 'Project Board',
-                    value: projectAdded ? `Added to ${projectType} board` : '⚠️ Not added to board',
+                    value: issue.projectAdded ? `Added to ${projectType} board${status ? ` (${status})` : ''}` : '⚠️ Not added to board',
                     inline: true
                 },
                 {
@@ -136,7 +144,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
                 }
             ])
             .setFooter({
-                text: `Issue #${issueId} created in ${match.name}`,
+                text: `Issue #${issue.number} created in ${match.name}`,
             })
 
         await interaction.reply({ embeds: [embed] })
