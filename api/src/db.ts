@@ -24,6 +24,10 @@ const pool = new Pool({
     keepAlive: true
 })
 
+pool.on('error', error => {
+    console.error('Postgres pool client error:', error)
+})
+
 function isRetryableDatabaseError(error: unknown) {
     if (!error || typeof error !== 'object') {
         return false
