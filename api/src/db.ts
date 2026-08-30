@@ -25,7 +25,7 @@ const pool = new Pool({
 })
 
 pool.on('error', error => {
-    console.error('Postgres pool client error:', error)
+    console.warn('Postgres pool client disconnected:', error)
 })
 
 function isRetryableDatabaseError(error: unknown) {
@@ -34,7 +34,7 @@ function isRetryableDatabaseError(error: unknown) {
     }
 
     const code = 'code' in error ? error.code : undefined
-    return typeof code === 'string' && [
+    if (typeof code === 'string' && [
         '57P01',
         '57P02',
         '57P03',
@@ -50,7 +50,12 @@ function isRetryableDatabaseError(error: unknown) {
         'ECONNRESET',
         'ECONNREFUSED',
         'EPIPE',
-    ].includes(code)
+    ].includes(code)) {
+        return true
+    }
+
+    const message = 'message' in error ? error.message : undefined
+    return typeof message === 'string' && /^Connection terminated(?: unexpectedly| due to connection timeout)?$/.test(message)
 }
 
 export default async function run(query: string, params?: SQLParamType) {
@@ -63,10 +68,11 @@ export default async function run(query: string, params?: SQLParamType) {
                 client.release()
             }
         } catch (error) {
-            console.error('Postgres connection failed:', error)
             if (!isRetryableDatabaseError(error)) {
+                console.error('Postgres connection failed:', error)
                 throw error
             }
+            console.warn('Postgres connection unavailable, retrying:', error)
             console.log(`Pool currently unavailable, retrying in ${config.CACHE_TTL_HOT / 1000}s...`)
             await sleep(config.CACHE_TTL_HOT)
         }
