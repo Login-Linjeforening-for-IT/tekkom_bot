@@ -170,7 +170,7 @@ export default async function clear(interaction: ChatInputCommandInteraction) {
                     }
 
                     try {
-                        await deleteWithTimeout(msg)
+                        await deleteWithTimeout(msg, 60_000)
                         oldDeleted++
                         timeout = 5
                         previousTimeout = 0
