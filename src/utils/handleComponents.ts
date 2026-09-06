@@ -10,13 +10,6 @@ import manageRoles from '#utils/tickets/roles.ts'
 import handleRemoveFromTicket from '#utils/tickets/remove.ts'
 import { nextPage, previousPage } from '#utils/help.ts'
 import { inviteToTicket, joinTicket } from '#utils/tickets/invite.ts'
-import handleTag, { removeTag } from '#utils/gitlab/handleTag.ts'
-import { Build, Increment } from '#interfaces'
-import retryDeployment from '#utils/gitlab/retryDeployment.ts'
-import trash from '#utils/trash.ts'
-import deployHelper from '#utils/gitlab/deployHelper.ts'
-import cancel from '#utils/gitlab/cancel.ts'
-import releaseHelper from '#utils/gitlab/releaseHelper.ts'
 
 export default async function handleComponents(interaction: ButtonInteraction | ChatInputCommandInteraction, id: string | undefined) {
     const buttonInteraction = interaction as ButtonInteraction
@@ -85,37 +78,6 @@ export default async function handleComponents(interaction: ButtonInteraction | 
             break
         case 'join_ticket':
             await joinTicket(buttonInteraction)
-            break
-        case 'major':
-            await handleTag(buttonInteraction, Increment.MAJOR)
-            break
-        case 'minor':
-            await handleTag(buttonInteraction, Increment.MINOR)
-            break
-        case 'patch':
-            await handleTag(buttonInteraction, Increment.PATCH)
-            break
-        case 'error':
-        case 'trash':
-            trash(buttonInteraction)
-            break
-        case 'cancel':
-            await removeTag(buttonInteraction)
-            break
-        case 'retryDeployment':
-            await retryDeployment(buttonInteraction)
-            break
-        case 'deployYes':
-            await deployHelper(buttonInteraction)
-            break
-        case 'deployNo':
-            await cancel(buttonInteraction, Build.DEPLOYMENT)
-            break
-        case 'releaseYes':
-            await releaseHelper(buttonInteraction)
-            break
-        case 'releaseNo':
-            await cancel(buttonInteraction, Build.RELEASE)
             break
         default:
             console.log(`${buttonInteraction.customId || id} is unhandled in handleComponents.`)

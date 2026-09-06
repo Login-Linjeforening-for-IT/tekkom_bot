@@ -64,9 +64,6 @@ All variables go in the root `.env` file.
 | `MINECRAFT_PORT`                       | Default Minecraft port                             |
 | `TEKKOM_BOT_API_URL`                   | URL of the bot's own API                           |
 | `TEKKOM_BOT_API_TOKEN`                 | Token for the bot's own API                        |
-| `TEKKOM_BOT_BTG_TOKEN`                 | BTG integration token                              |
-| `GITHUB_TOKEN`                         | GitHub token for repository actions                |
-| `PRIVATE_TOKEN`                        | GitLab private token                               |
 | `HEARTBEAT_URL`                        | Uptime heartbeat URL                               |
 | `RUNNING_ID`                           | Unique ID for this running instance                |
 | `DB`                                   | Postgres database name                             |

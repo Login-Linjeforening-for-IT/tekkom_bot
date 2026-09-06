@@ -31,17 +31,6 @@ const validCommands = [
     'previous_page_help',
     'invite_to_ticket',
     'join_ticket',
-    'major',
-    'minor',
-    'patch',
-    'trash',
-    'error',
-    'cancel',
-    'retryDeployment',
-    'deployYes',
-    'deployNo',
-    'releaseYes',
-    'releaseNo'
 ]
 
 const exceptions = [

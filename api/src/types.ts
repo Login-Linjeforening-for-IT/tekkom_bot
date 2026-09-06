@@ -38,12 +38,6 @@ declare global {
         last_sent: string
     }
 
-    type Btg = {
-        name: string
-        service: string
-        author: string
-    }
-
     type SQLParamType = (string | number | null | boolean | string[] | Date)[]
 
     type Activity = {

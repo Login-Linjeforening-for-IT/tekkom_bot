@@ -9,14 +9,11 @@ import getIndex from './handlers/index/getIndex.ts'
 import postSentAnnouncements from './handlers/sent/post.ts'
 import getRoles from './handlers/roles/get.ts'
 import postRoles from './handlers/roles/post.ts'
-import getBtg from './handlers/btg/get.ts'
-import postBtg from './handlers/btg/post.ts'
 import postListen from './handlers/activity/postListen.ts'
 import getActivity from './handlers/activity/getListen.ts'
 import postHideActivity from './handlers/activity/postHide.ts'
 import postGame from './handlers/activity/postGame.ts'
 import getTrackPreview from './handlers/spotify/get.ts'
-import postIssue from './handlers/issue/post.ts'
 import getDebt from './handlers/debt/get.ts'
 import postDebt from './handlers/debt/post.ts'
 import deleteDebt from './handlers/debt/delete.ts'
@@ -54,10 +51,6 @@ export default async function apiRoutes(fastify: FastifyInstance, _: FastifyPlug
     fastify.delete('/announcements', deleteAnnouncements)
     fastify.post('/sent', postSentAnnouncements)
 
-    // btg
-    fastify.get('/btg', getBtg)
-    fastify.post('/btg', postBtg)
-
     // activity
     fastify.get('/activity', getActivity)
     fastify.get('/activity/games', getGameActivity)
@@ -67,9 +60,6 @@ export default async function apiRoutes(fastify: FastifyInstance, _: FastifyPlug
 
     // spotify
     fastify.get('/track/:id', getTrackPreview)
-
-    // issue
-    fastify.post('/issue', postIssue)
 
     // debt
     fastify.get('/debt', getDebt)

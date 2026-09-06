@@ -17,13 +17,10 @@ const {
     MINECRAFT_SURVIVAL_PORT,
     MINECRAFT_CREATIVE_PORT,
     MINECRAFT_PORT,
-    PRIVATE_TOKEN,
-    GITHUB_TOKEN,
     DISCORD_SERVICE_MONITORING_CHANNEL_ID,
     TEKKOM_BOT_API_URL,
     TEKKOM_BOT_API_TOKEN,
     HEARTBEAT_URL,
-    TEKKOM_BOT_BTG_TOKEN,
     KUBERNETES_SERVICE_PORT,
     DISCORD_TEKKOM_VERV_CHANNEL_ID
 } = process.env
@@ -44,12 +41,9 @@ if (
     || !MINECRAFT_SURVIVAL_PORT
     || !MINECRAFT_CREATIVE_PORT
     || !MINECRAFT_PORT
-    || !PRIVATE_TOKEN
-    || !GITHUB_TOKEN
     || !TEKKOM_BOT_API_URL
     || !TEKKOM_BOT_API_TOKEN
     || !HEARTBEAT_URL
-    || !TEKKOM_BOT_BTG_TOKEN
 ) {
     throw new Error('Missing essential environment variables in config.')
 }
@@ -75,11 +69,8 @@ const config = {
             name: MINECRAFT_CREATIVE
         }
     ],
-    privateToken: PRIVATE_TOKEN,
-    githubToken: GITHUB_TOKEN,
     api: TEKKOM_BOT_API_URL,
     tekkomBotApiToken: TEKKOM_BOT_API_TOKEN,
-    tekkomBotBtgToken: TEKKOM_BOT_BTG_TOKEN,
     heartbeat: {
         url: HEARTBEAT_URL,
         interval: 60000
